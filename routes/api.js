@@ -2,14 +2,15 @@ var express = require('express');
 var router = express.Router();
 var db = require("../DBHandler");
 
-router.post('/addentry', (req, res) => {
+//Entry
+router.post('/entry/add', (req, res) => {
     var data = req.body;
     var entry = new db.Entry({
         sender: data.sender,
         content: data.content,
-        data: Date.now,
+        date: Date.now(),
         Tags: [],
-        Topic: null,
+        Topic: data.Topic,
         AnswerTo: null,
         AnswerAmount: 0,
         PositiveVote: 0,
@@ -23,7 +24,7 @@ router.post('/addentry', (req, res) => {
     })
 });
 
-router.get('/getlist', (req,res) => {
+router.get('/entry/list', (req,res) => {
     db.getEntries((data,err) => {
         if(err) res.sendStatus(404);
         else{
@@ -31,5 +32,18 @@ router.get('/getlist', (req,res) => {
         }        
     })
 });
+
+//Topic
+router.get('/topic/list', (req, res) => {
+    var amount = parseInt(req.body.amount);
+
+    db.getTopics(amount, (data,err) => {
+        if(err)  res.sendStatus(404);
+        else{
+            res.send(JSON.stringify(data));
+        }
+    });
+});
+
 
 module.exports = router;

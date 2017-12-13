@@ -20,6 +20,13 @@ var entrySchema = mongoose.Schema({
 
 var Entry = mongoose.model("Entry", entrySchema);
 
+var topicSchema = mongoose.Schema({
+    Title: String,
+    EntryAmount: Number
+})
+
+var Topic = mongoose.model("Topic", topicSchema);
+
 //Functionality
 var DBHandler = {
     //variables
@@ -39,19 +46,56 @@ var DBHandler = {
     },
     //expand models
     Entry: Entry,
+    Topic: Topic,
     //Entry functions
     addEntryFunction: function(entry, callback){
         entry.save((err, entry) => {
-            if(err) return callback(entry, err);
-            callback(entry);
+            if(err){
+                return callback(entry, err);
+            }
+            //check if it has a topic and add it to topic db
+            if(entry.Topic != ""){
+                //if it exists up the amount
+                Topic.findOne({Title:entry.Topic}).exec((err,data) => {
+                    if(data != null){
+                        data.EntryAmount++;
+                        data.save((err, topic) => {
+                            return callback(entry);
+                            
+                        })
+                    }
+                    else{
+                        var topic = new Topic({
+                            Title: entry.Topic,
+                            EntryAmount: 1
+                        });
+                        topic.save((err, topic) => {
+                            return callback(entry);
+                        })
+                    }
+                })
+            }else{
+                return callback(entry);
+            }            
         });
     },
     getEntries: function(callback){
         Entry.find({}).sort({date: -1}).exec((err,data ) => {
-            if(err) callback(data,err);
-            callback(data);
-        })
+            callback(data,err);
+        });
+    },
+    //Topic functions
+    addTopicFunction: function(topic, callback){
+        entry.save((err, topic) => {
+            return callback(entry,err);
+        });
+    },
+    getTopics: function(amount,callback){
+        Topic.find({}).sort({EntryAmount: -1}).limit(amount).exec((err, data) => {
+            return callback(data, err);
+        });
     }
+
 }
 
 module.exports = DBHandler;
