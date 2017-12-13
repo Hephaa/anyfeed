@@ -54,6 +54,21 @@ var MainFrame = new Vue({
                     self.inputTopic = "";                    
                 }
             })
+        },
+        loadMain: function(){
+            var self = this;
+            loading = true;
+            $.ajax({
+                type: "GET",
+                url: '/api/entry/list',
+                success: (data) => {
+                    self.loading = false;
+                    self.entryList = JSON.parse(data);                
+                }
+            });
+        },
+        openTopic: function(topic){
+            LeftFrame.openTopic(topic);
         }
     }
 })
@@ -62,13 +77,14 @@ var MainFrame = new Vue({
 var LeftFrame = new Vue({
     el: '#left-frame',
     data:{
-        topicList: []
+        topicList: [],
+        selectedTopic: null
     },
     mounted: function(){
         var self = this;
         var data = {amount:10}
         $.ajax({
-            type:"GET",
+            type:"POST",
             url:"/api/topic/list",
             contentType: 'application/json',
             data: JSON.stringify(data),
@@ -78,8 +94,30 @@ var LeftFrame = new Vue({
         })
     },
     methods: {
-        openTopic: function(){
-            console.log(topic + " open action")
+        openTopic: function(topic){
+            var self = this;
+            var data = {
+                topic: topic
+            }
+            MainFrame.loading = true;
+
+            $.ajax({
+                type: "POST",
+                url:"/api/entry/bytopic",
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: (list) => {
+                    MainFrame.entryList = JSON.parse(list);
+                    MainFrame.inputTopic = topic;
+                    MainFrame.loading = false;
+                    self.selectedTopic = topic;
+                }
+            });
+        },
+        closeTopic: function(){
+            MainFrame.loadMain();
+            this.selectedTopic = null;
+            MainFrame.inputTopic = "";
         }
     }
 })

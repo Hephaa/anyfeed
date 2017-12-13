@@ -37,8 +37,11 @@
             </div>
             <div v-else>
               <h3>Topics:</h3>
+              <hr/>
+              <button class="btn btn-warning" v-if="selectedTopic!=null" v-on:click="closeTopic">{{selectedTopic}} X</button>
+              <hr v-if="selectedTopic!=null"/>
               <ul class="list-group">
-                  <button class="btn btn-link list-group-item" v-for="topic in topicList" v-on:click="openTopic()">
+                  <button class="btn btn-link list-group-item" v-for="topic in topicList" v-on:click="openTopic(topic.Title)">
                     {{topic.Title}} <span class="badge badge-info">{{topic.EntryAmount}}</span>
                   </button>
               </ul>              
@@ -61,7 +64,7 @@
               <li class="list-group-item" v-for="entry in entryList">
                   <div class="card">
                       <div class="card-header" v-if="entry.Topic!=null">
-                        <a class="card-link" href="#">{{entry.Topic}}</a>
+                        <button class="btn btn-link" v-on:click="openTopic(entry.Topic)">{{entry.Topic}}</button>
                       </div>
                       <div class="card-body">
                         <p class="card-link">{{entry.content}}</p>

@@ -84,6 +84,11 @@ var DBHandler = {
             callback(data,err);
         });
     },
+    getEntriesByTopic: function(topic, callback){
+        Entry.find({Topic: topic}).sort({date: -1}).exec((err,data ) => {
+            callback(data,err);
+        });
+    },
     //Topic functions
     addTopicFunction: function(topic, callback){
         entry.save((err, topic) => {

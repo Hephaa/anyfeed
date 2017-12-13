@@ -33,9 +33,19 @@ router.get('/entry/list', (req,res) => {
     })
 });
 
+router.post('/entry/bytopic', (req, res) => {
+    var topic = req.body.topic;
+    db.getEntriesByTopic(topic, (data,err) => {
+        if(err) res.sendStatus(404);
+        else{
+            res.send(JSON.stringify(data));
+        }
+    })
+});
+
 //Topic
-router.get('/topic/list', (req, res) => {
-    var amount = parseInt(req.body.amount);
+router.post('/topic/list', (req, res) => {
+    var amount = parseInt(req.body.amount);    
 
     db.getTopics(amount, (data,err) => {
         if(err)  res.sendStatus(404);
