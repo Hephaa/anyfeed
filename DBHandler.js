@@ -89,6 +89,11 @@ var DBHandler = {
             callback(data,err);
         });
     },
+    getEntriesByQuery: function(query, callback){
+        Entry.find({content: {$regex: query, $options: "i"}}).sort({date: -1}).exec((err, data) => {
+            callback(data,err);
+        });
+    },
     //Topic functions
     addTopicFunction: function(topic, callback){
         entry.save((err, topic) => {

@@ -39,41 +39,48 @@
               <h3>Topics:</h3>
               <hr/>
               <button class="btn btn-warning" v-if="selectedTopic!=null" v-on:click="closeTopic">{{selectedTopic}} X</button>
-              <hr v-if="selectedTopic!=null"/>
+              <hr v-if="selectedTopic!=null" />
               <ul class="list-group">
-                  <button class="btn btn-link list-group-item" v-for="topic in topicList" v-on:click="openTopic(topic.Title)">
-                    {{topic.Title}} <span class="badge badge-info">{{topic.EntryAmount}}</span>
-                  </button>
-              </ul>              
+                <button class="btn btn-link list-group-item" v-for="topic in topicList" v-on:click="openTopic(topic.Title)">
+                  {{topic.Title}}
+                  <span class="badge badge-info">{{topic.EntryAmount}}</span>
+                </button>
+              </ul>
             </div>
           </div>
+          <div v-if="searchQuery!=null">
+              <hr/ >
+              <h4>Search:</h4>
+              <button class="btn btn-warning" v-on:click="clearSearch">{{searchQuery}} X</button>
+          </div>
+
         </div>
         <div class="col-md-6">
           <div class="container" id="main-frame">
-              <div class="form-group entry-input">
-                  <div class="form-inline row">
-                    <input type="text" class="form-control col-md-3" placeholder="Alias" v-model="inputAlias">
-                    <input type="text" class="form-control col-md-9" placeholder="Topic" v-model="inputTopic">
-                  </div>              
-                  <textarea rows="3" class="form-control" placeholder="Your entry" v-model="inputText"></textarea>              
-                  <button class="btn btn-primary btn-block" v-on:click="sendEntry">Send!</button>
-                </div>
+            <div class="form-group entry-input">
+              <div class="form-inline row">
+                <input type="text" class="form-control col-md-3" placeholder="Alias" v-model="inputAlias">
+                <input type="text" class="form-control col-md-9" placeholder="Topic" v-model="inputTopic">
+              </div>
+              <textarea rows="3" class="form-control" placeholder="Your entry" v-model="inputText"></textarea>
+              <button class="btn btn-primary btn-block" v-on:click="sendEntry">Send!</button>
+            </div>
             <div class="loader" v-if="loading">
             </div>
             <ul class="list-group" v-else>
               <li class="list-group-item" v-for="entry in entryList">
-                  <div class="card">
-                      <div class="card-header" v-if="entry.Topic!=null">
-                        <button class="btn btn-link" v-on:click="openTopic(entry.Topic)">{{entry.Topic}}</button>
-                      </div>
-                      <div class="card-body">
-                        <p class="card-link">{{entry.content}}</p>
-                      </div>
-                      <div class="card-footer">
-                        <p class="card-subtitle entry-date">{{entry.date.toLocaleString()}}</p>
-                        <p class="card-subtitle entry-alias" v-if="entry.sender.length!=0">{{entry.sender}}</p>
-                      </div>
-                    </div>
+                <div class="card">
+                  <div class="card-header" v-if="entry.Topic!=null">
+                    <button class="btn btn-link" v-on:click="openTopic(entry.Topic)">{{entry.Topic}}</button>
+                  </div>
+                  <div class="card-body">
+                    <p class="card-link">{{entry.content}}</p>
+                  </div>
+                  <div class="card-footer">
+                    <p class="card-subtitle entry-date">{{entry.date.toLocaleString()}}</p>
+                    <p class="card-subtitle entry-alias" v-if="entry.sender.length!=0">{{entry.sender}}</p>
+                  </div>
+                </div>
               </li>
             </ul>
           </div>

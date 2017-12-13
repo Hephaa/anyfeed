@@ -30,7 +30,7 @@ var MainFrame = new Vue({
             var data = {
                 sender: self.inputAlias.trim(),
                 content: self.inputText.trim(),
-                Topic: self.inputTopic.trim()
+                Topic: self.inputTopic.trim()                
             };
             $.ajax({
                 type: "POST",
@@ -78,7 +78,8 @@ var LeftFrame = new Vue({
     el: '#left-frame',
     data:{
         topicList: [],
-        selectedTopic: null
+        selectedTopic: null,
+        searchQuery: null
     },
     mounted: function(){
         var self = this;
@@ -111,6 +112,8 @@ var LeftFrame = new Vue({
                     MainFrame.inputTopic = topic;
                     MainFrame.loading = false;
                     self.selectedTopic = topic;
+                    Search.query = "";
+                    self.searchQuery = null;
                 }
             });
         },
@@ -118,6 +121,11 @@ var LeftFrame = new Vue({
             MainFrame.loadMain();
             this.selectedTopic = null;
             MainFrame.inputTopic = "";
+        },
+        clearSearch: function(){
+            this.searchQuery = null;
+            Search.query = "";
+            MainFrame.loadMain();
         }
     }
 })
@@ -130,8 +138,24 @@ var Search = new Vue({
     },
     methods: {
         searchQuery: function() {
-            console.log(this.query);
-            //get the data
+            var self = this;
+            if(this.query == "") return;
+            var data = {
+                query: this.query
+            };
+            MainFrame.loading = true;
+            $.ajax({
+                type: "POST",
+                url:"/api/entry/query",
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: (list) => {
+                    MainFrame.entryList = JSON.parse(list);
+                    MainFrame.loading = false;
+                    LeftFrame.selectedTopic = null;
+                    LeftFrame.searchQuery = self.query;
+                }
+            });
         }
     }
 })
