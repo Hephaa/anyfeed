@@ -11,8 +11,7 @@ Start the server
 ```
 node .\anyfeed.js
 ```
-Now you can go to localhost:300 to view!
+Now you can go to localhost:3000 to view!
 
 ## Current State
-Currently there is not much in the project. There isn't really a ui since the ui was built in a different project.
-Soon it will all come together!
+Basic logic and some extra  stuff is in here now! Administration is being implemented in a different project and will be merged soon
