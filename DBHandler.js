@@ -45,6 +45,12 @@ var DBHandler = {
             if(err) return callback(entry, err);
             callback(entry);
         });
+    },
+    getEntries: function(callback){
+        Entry.find({}).sort({date: -1}).exec((err,data ) => {
+            if(err) callback(data,err);
+            callback(data);
+        })
     }
 }
 
