@@ -18,7 +18,7 @@ router.post('/entry/add', (req, res) => {
         content: data.content,
         date: Date.now(),
         Tags: [],
-        Topic: data.Topic,
+        Topic: data.Topic == "" ? null : data.Topic,
         AnswerTo: null,
         AnswerAmount: 0,
         PositiveVote: 0,

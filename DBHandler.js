@@ -73,7 +73,7 @@ var DBHandler = {
                 return callback(entry, err);
             }
             //check if it has a topic and add it to topic db
-            if(entry.Topic != ""){
+            if(entry.Topic != "" && entry.Topic != null){
                 //if it exists up the amount
                 Topic.findOne({Title:entry.Topic}).exec((err,data) => {
                     if(data != null){

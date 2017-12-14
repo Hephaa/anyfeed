@@ -46,7 +46,7 @@ var MainFrame = new Vue({
                     if(topic.length != 0){
                         topic[0].EntryAmount++;
                     }
-                    else if(LeftFrame.topicList.length < 10){
+                    else if(LeftFrame.topicList.length < 10 && elf.inputTopic.trim() != ""){
                         LeftFrame.topicList.push({Title: self.inputTopic.trim(), EntryAmount: 1})
                     }
                     self.inputAlias = "";
