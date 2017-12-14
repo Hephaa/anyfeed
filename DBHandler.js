@@ -1,4 +1,5 @@
 var mongoose = require("mongoose");
+var bcrypt = require('bcrypt');
 
 //variables
 var mongoDB = 'mongodb://localhost/anyfeed';
@@ -27,6 +28,23 @@ var topicSchema = mongoose.Schema({
 
 var Topic = mongoose.model("Topic", topicSchema);
 
+var userSchema = mongoose.Schema({
+	local: {
+		username: String,
+		password: String
+	}
+});
+
+userSchema.methods.generateHash = function(password){
+	return bcrypt.hashSync(password, bcrypt.genSaltSync(9));
+}
+
+userSchema.methods.validPassword = function(password){
+	return bcrypt.compareSync(password, this.local.password);
+}
+
+var User = mongoose.model("User", userSchema);
+
 //Functionality
 var DBHandler = {
     //variables
@@ -47,6 +65,7 @@ var DBHandler = {
     //expand models
     Entry: Entry,
     Topic: Topic,
+    User: User,
     //Entry functions
     addEntryFunction: function(entry, callback){
         entry.save((err, entry) => {
@@ -89,10 +108,12 @@ var DBHandler = {
             callback(data,err);
         });
     },
-    getEntriesByQuery: function(query, callback){
+    getEntriesByQuery: function(query, callback){        
         Entry.find({content: {$regex: query, $options: "i"}}).sort({date: -1}).exec((err, data) => {
             callback(data,err);
         });
+        
+        //var queryList = []
     },
     //Topic functions
     addTopicFunction: function(topic, callback){

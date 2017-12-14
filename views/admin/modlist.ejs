@@ -1,0 +1,86 @@
+<html>
+
+<head>
+	<title>Any Feed </title>
+	<script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>
+	<script src="/assets/modfront.js"></script>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+	<!-- load bootstrap css -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+	<!-- load fontawesome -->
+	<link href="/css/styles.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+	<script>
+		$('body').on('click', 'h2', function () {
+			$("#FeedEnter").load(location.href + " #FeedEnter>*", "");
+		});
+		var flag = false;
+		$(document).scroll(function (e) {
+			window.onscroll = function (ev) {
+				if ((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight) {
+					var scrollPos = $(window).scrollTop();
+					window.scrollTo(0, scrollPos - 1);
+					if (flag == false) {
+						$('li').css({ 'pointer-events': 'none' });
+						$("#FeedEnter").load(location.href + " #FeedEnter>*", "");
+
+						flag = true;
+						if (flag == true) {
+							setTimeout(function () {
+								flag = false;
+							}, 1500);						
+}
+					}
+				}			
+}
+		});
+	</script>
+
+	<div class="buttonbox">
+		<button2 onclick="location.href='/admin/logout'" type="button">
+			Log Out</button2>
+		<button2 onclick="location.href='/admin/mod'" type="button">
+			Feeds List</button2>
+		<button2 onclick="location.href='/admin/signup'" type="button">
+			Add New Moderator</button2>
+
+	</div>
+	<div id=shadow2>
+		<br></br>
+	</div>
+
+	<div class="main">
+
+		<div id="wrapper">
+			<div id="FeedEnter">
+				<br />
+				<h2>Moderators List</h2>
+				<ul>
+
+
+					<%for(var i=0; i<users.length;i++){%>
+						<li>
+							<%=users[i].local.username%>
+								<button3 type="sub">Delete</button3>
+								<p4>
+									<%=users[i]._id%>
+								</p4>
+						</li>
+
+
+
+						<%}%>
+
+
+				</ul>
+			</div>
+		</div>
+	</div>
+
+
+
+</body>
+
+</html>

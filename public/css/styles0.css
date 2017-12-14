@@ -1,0 +1,218 @@
+body{
+  background: #004225;
+  color: #989898;
+}
+button3{
+    width: 5%;
+    margin-left: 10px;
+    float: right;
+    background: rgba(255,255,255,0.5);
+    border: 0;
+    box-sizing: border-box;
+    color: #000;
+    cursor: pointer;
+    font-size: 18px;
+    text-align: center;
+    min-width: 120px;
+    min-height: 30px;
+    display: inline;
+}
+button3:hover{
+    background: rgba(200,0,0,1);
+}
+
+#shadow2{
+  z-index: 4;
+  width: 100%;
+  padding: 5px;
+  box-sizing: border-box;
+  background: rgba(0,0,0,0.6);
+  margin: 0 auto;
+  overflow: hidden;
+  font-size: 2px;
+  position: fixed; /* Set the navbar to fixed position */
+  margin-top: 85px;/* Position the navbar at the top of the page */
+  width: 100%; /* Full width */
+}
+
+.buttonbox {
+  z-index: 3;
+   overflow: hidden;
+   background-color: #333;
+   position: fixed; /* Set the navbar to fixed position */
+   top: 0; /* Position the navbar at the top of the page */
+   width: 100%; /* Full width */
+   padding: 30px;
+   box-sizing: border-box;
+   font-size: 20px;
+   text-align: center;
+   letter-spacing: 1px;
+}
+
+button2{
+    padding: 10px;
+    margin-top:-10px;
+    width: 10%;
+    float: right;
+    background: rgba(255,255,255,0.5);
+    border: 0;
+    box-sizing: border-box;
+    color: #000;
+    cursor: pointer;
+    font-size: 18px;
+    margin-left: 20px;
+    min-width: 200px;
+    min-height: 30px;
+    display: inline;
+}
+button2:hover{
+    background: rgba(200,200,200,1);
+}
+
+
+h1{
+  position: fixed;
+  left: 50%;
+  top: -2%;
+  transform: translateX(-50%);
+  z-index: 3;
+  text-align: center;
+  min-width: 500px;
+  min-height: 50px;
+  display: inline;
+}
+
+h2{
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    background: #7e2520;
+    font-size: 20px;
+    margin-top: 30px;
+    text-align: center;
+    letter-spacing: 1px;
+}
+p1{
+    padding: 5px;
+    padding-right: 40px;
+    padding-left: 40px;
+    box-sizing: border-box;
+    background: #4e2520;
+    font-size: 30px;
+    margin-top: 30px;
+    margin-right: 30px;
+    letter-spacing: 1px;
+}
+
+#wrapper{
+
+  z-index: 2;
+  width: 40%;
+  padding: 60px;
+  box-sizing: border-box;
+  background: rgba(0,0,0,0.6);
+  font-size: 20px;
+  position: fixed;
+  left: 50%;
+  top: 20%;
+  transform: translateX(-50%);
+  float: center;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+#wrapper2{
+  z-index: 2;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  background: rgba(0,0,0,0.6);
+  font-size: 20px;
+  position: fixed;
+  left: 50%;
+  top: 100.5%;
+  transform: translateX(-50%);
+  float: center;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+#FeedEnter{
+  z-index: 1;
+    position: relative;
+    width: 10 0%;
+    background: #340762;
+    margin: 0 auto;
+    padding: 40px;
+    box-sizing: border-box;
+}
+
+#wrapper form:after{
+    margin: 0 auto;
+    content: '';
+    display: block;
+    clear: both;
+}
+
+input[type="text"]{
+    width: 100%;
+    padding: 20px;
+    margin-bottom:60px;
+    background:#181c22;
+    border: 0;
+    float: left;
+    font-size: 20px;
+    color: #989898;
+}
+
+input[type="password"]{
+    width: 100%;
+    padding: 20px;
+    margin-top:-20px;
+    margin-bottom:20px;
+    background:#181c22;
+    border: 0;
+    float: left;
+    font-size: 20px;
+    color: #989898;
+}
+
+button{
+    padding: 10px;
+    margin-top: 20px;
+    width: 30%;
+    float: center;
+    background: #23282e;
+    border: 0;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+button:hover{
+    background: rgba(150,150,0,1);
+}
+
+ul{
+    list-style-type: none;
+    padding: 0px;
+    margin-top: 65px;
+}
+
+li{
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    background: #47226C;
+    font-size: 20px;
+    margin-top: 30px;
+    cursor: pointer;
+    text-align: left;
+    letter-spacing: 1px;
+}
+
+li:hover{
+    text-decoration: line-through;
+    background: rgba(0,0,0,0.2);
+}

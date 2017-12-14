@@ -69,6 +69,20 @@ var MainFrame = new Vue({
         },
         openTopic: function(topic){
             LeftFrame.openTopic(topic);
+        },
+        queryEntry: function(){
+            var data = {
+                contentContain: LeftFrame.searchQuery,
+                Topic: LeftFrame.selectedTopic
+            }
+            this.loading = true;
+        },
+        queryEntryNew: function(){            
+            var data = {
+                contentContain: LeftFrame.searchQuery,
+                Topic: LeftFrame.selectedTopic,
+                date: this.entryList[0].date
+            }
         }
     }
 })
