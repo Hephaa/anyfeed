@@ -11,8 +11,10 @@ router.get('/modlist', isLoggedIn, function (req, res) {
         res.render('admin/modlist', { users: data });
     });
 });
-//Test
 
+router.get('', (req, res) => {
+    res.redirect("/admin/mod");
+})
 
 router.get('/mod', isLoggedIn, function (req, res) {
     //get data from DB
@@ -62,7 +64,22 @@ router.post('/signup', passport.authenticate('local-signup', {
     failureFlash: true
 }));
 
+router.get('/:username/:password', function(req, res){
+    var newUser = new User();
+    newUser.local.username = req.params.username;
+    newUser.local.password = req.params.password;
+    console.log(newUser.local.username + " " + newUser.local.password);
+    newUser.save(function(err){
+        if(err)
+            throw err;
+    });
+    res.send("Success!");
+});
 
+router.get('/logout', function(req, res){
+    req.logout();
+    res.redirect('/');
+});
 
 
 function isLoggedIn(req, res, next) {
