@@ -8,34 +8,31 @@
 	<!-- load bootstrap css -->
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
 	<!-- load fontawesome -->
-	<link href="/css/styles.css" rel="stylesheet" type="text/css" />
+	<link href="/css/styles1.css" rel="stylesheet" type="text/css" />
 </head>
-<script>
-
-	$(document).scroll(function (e) {
-		window.onscroll = function (ev) {
-			if ((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight) {
-				var scrollPos = $(window).scrollTop();
-				window.scrollTo(0, scrollPos - 1);
-				$("#FeedEnter").load(location.href + " #FeedEnter>*", "");
-			}
-		}
-	});
-
-
-
-</script>
-
-
 
 <body>
+	<script>
+		$('body').on('click', 'h2', function () {
+			$("#FeedEnter").load(location.href + " #FeedEnter>*", "");
+		});
 
+
+		setInterval(function () {
+			$("#FeedEnter").load(location.href + " #FeedEnter>*", "");
+		}, 1000);
+
+	</script>
 
 	<div class="buttonbox">
 		<button2 onclick="location.href='/admin/logout'" type="button">
 			Log Out</button2>
 		<button2 onclick="location.href='/admin/signup'" type="button">
 			Add New Moderator</button2>
+		<button2 onclick="location.href='/admin/modlist'" type="button">
+			Moderators List</button2>
+		<button2 onclick="location.href='/admin/mod'" type="button">
+			Slow Mode</button2>
 	</div>
 	<div id=shadow2>
 		<br></br>
@@ -45,23 +42,25 @@
 
 		<div id="wrapper">
 			<div id="FeedEnter">
-				<br />
-				<h2>🡻 🡻 🡻 Click On Any Feed To Delete 🡻 🡻 🡻 </h2>
+
 				<ul>
 
 
-					<%for(var i=0; i<feeds.length;i++){%>
-						<li>
-							<%=feeds[i].content%>
-								<p4>
-									<%=feeds[i]._id%>
-								</p4>
-						</li>
+					<%var k=feeds.length-1%>
+						<h2> Live View </h2>
+						<%for(var i=0; i<feeds.length;i++){%>
+							<li>
+								<%=feeds[k-i].content%>
+									<button3 type="sub">Delete</button3>
+									<p4>
+										<%=feeds[k-i]._id%>
+									</p4>
+							</li>
 
 
 
-						<%}%>
-							<h2>🡻 🡻 🡻 Scroll Down To Load New Feeds 🡻 🡻 🡻 </h2>
+							<%}%>
+
 
 				</ul>
 			</div>

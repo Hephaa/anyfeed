@@ -1,11 +1,18 @@
 var express = require('express');
 var router = express.Router();
 var db = require("../DBHandler");
+var Filter = require('bad-words');
+
+
+
+var filter = new Filter();
+filter.addWords('hello');
 
 
 //Entry
 router.post('/entry/add', (req, res) => {
     var data = req.body;
+    data.content = filter.clean(data.content);
     var entry = new db.Entry({
         sender: data.sender,
         content: data.content,

@@ -24,6 +24,14 @@ router.get('/mod', isLoggedIn, function (req, res) {
     });
 });
 
+router.get('/live',isLoggedIn, function(req,res){
+	//get data from DB
+	Entry.find({},function(err, data){
+		if(err) throw err;
+			res.render('admin/live',{feeds: data});
+	});
+});
+
 router.delete('/modlist/:item', isLoggedIn, function (req, res) {
     console.log('delete worked');
     console.log(req.params.item);

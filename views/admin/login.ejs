@@ -1,30 +1,39 @@
 <!-- views/login.ejs -->
 <!doctype html>
 <html>
+
 <head>
 	<title>Any Feed </title>
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
-<link href="/css/styles0.css" rel="stylesheet" type="text/css"/>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+	<!-- load bootstrap css -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+	<!-- load fontawesome -->
+	<link href="/css/styles0.css" rel="stylesheet" type="text/css" />
 
 </head>
+
 <body>
 
 	<div id="wrapper">
-<h1><span class="fa fa-sign-in"></span> Login</h1>
-	<% if (message.length > 0) { %>
-		<div class="alert alert-danger"><%= message %></div>
-	<% } %>
-	<form action="/admin/login" method="post">
-		<input type="text"  name="username" placeholder="Enter Username" required />
-		<input type="password"  name="password" placeholder="Enter Password" required>
-	<button type="sub"> Login </button>
-	</form>
-	<div id="wrapper2">
-	<p> Go back to <a href="/">AnyFeed</a>.</p>
-	</div>
+		<h1>
+			<span class="fa fa-sign-in"></span> Login</h1>
+		<% if (message.length > 0) { %>
+			<div class="alert alert-danger">
+				<%= message %>
+			</div>
+			<% } %>
+				<form action="/admin/login" method="post">
+					<input type="text" name="username" placeholder="Enter Username" required />
+					<input type="password" name="password" placeholder="Enter Password" required>
+					<button type="sub"> Login </button>
+				</form>
+				<div id="wrapper2">
+					<p> Go back to
+						<a href="/">AnyFeed</a>.</p>
+				</div>
 
-</div>
-</div>
+	</div>
+	</div>
 </body>
+
 </html>
