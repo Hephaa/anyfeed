@@ -125,6 +125,14 @@ var DBHandler = {
         Topic.find({}).sort({EntryAmount: -1}).limit(amount).exec((err, data) => {
             return callback(data, err);
         });
+    },
+
+
+    //general functions
+    clearDatabase: function(callback){
+        Entry.remove({}, () => {
+            Topic.remove({}, callback);
+        })
     }
 
 }

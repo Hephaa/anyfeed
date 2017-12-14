@@ -1,7 +1,9 @@
 var express = require('express');
 var router = express.Router();
+var db = require("../DBHandler");
 var User = require("../DBHandler").User;
 var Entry = require("../DBHandler").Entry;
+var Topic = require("../DBHandler").Topic;
 var passport = require('passport');
 
 router.get('/modlist', isLoggedIn, function (req, res) {
@@ -43,12 +45,38 @@ router.delete('/modlist/:item', isLoggedIn, function (req, res) {
 });
 
 router.delete('/:item', function (req, res) {
-    console.log('delete worked');
     console.log(req.params.item);
+    var topicTitle = req.body.topic;
     //delete requested item from db
     Entry.findById(req.params.item.replace(/\-/g, "")).remove(function (err, data) {
         if (err) throw err;
-        res.json(data);
+        console.log(topicTitle);
+        if(topicTitle != ""){
+            Topic.findOne({Title: topicTitle}).exec((err,topic) => {
+                console.log(topic);
+                if(err) return;
+                if(topic != null){
+                    if(topic.EntryAmount > 1){
+                        topic.EntryAmount--;
+                        Topic.update({_id: topic._id}, topic, function(err, raw){
+                            if(err) throw err;
+                            res.json(data);
+                        });
+                    }else{
+                        Topic.findById(topic._id).remove().exec((err, t) => {
+                            res.json(data);
+                        })
+                    }
+                }
+                else{
+                    res.json(data);
+                }
+            })
+        }
+        else{
+            res.json(data);
+        }
+        
     });
 });
 
@@ -89,6 +117,13 @@ router.get('/logout', function(req, res){
     res.redirect('/');
 });
 
+
+router.get('/cleardb', isLoggedIn, function(req, res) {
+    db.clearDatabase((err) => {
+        if(err) throw err;
+        res.redirect("/");
+    })
+});
 
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) {
