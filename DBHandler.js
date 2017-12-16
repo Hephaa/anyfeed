@@ -109,11 +109,32 @@ var DBHandler = {
         });
     },
     getEntriesByQuery: function(query, callback){        
-        Entry.find({content: {$regex: query, $options: "i"}}).sort({date: -1}).exec((err, data) => {
+        /*Entry.find({content: {$regex: query, $options: "i"}}).sort({date: -1}).exec((err, data) => {
             callback(data,err);
-        });
-        
-        //var queryList = []
+        });*/
+
+        //create query method
+        var queryMethod = {};
+        if(query.Topic)
+            queryMethod.Topic = query.Topic;
+        if(query.Search)
+            queryMethod.content = {$regex: query.Search, $options: "i"}
+
+        //create sort method
+        var sortMethod = {};
+        if(query.Sort=="date-desc"){
+            sortMethod = {date: -1};
+        }else if(query.Sort=="date-asc"){
+            sortMethod = {date: 1};
+        }
+
+        //Query contains: Topic, search -- sort method
+        Entry
+        .find(queryMethod)
+        .sort(sortMethod)
+        .exec((err, data) => {
+            callback(data, err);
+        })
     },
     //Topic functions
     addTopicFunction: function(topic, callback){

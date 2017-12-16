@@ -52,9 +52,13 @@ router.post('/entry/bytopic', (req, res) => {
 });
 
 router.post('/entry/query', (req, res) => {
-    var query = req.body.query;
+    var query = req.body;
+    console.log(query);
     db.getEntriesByQuery(query, (data,err) => {
-        if(err) res.sendStatus(404);
+        if(err) {
+            console.log(err);
+            res.sendStatus(404);
+        }
         else{
             res.send(JSON.stringify(data));
         }        

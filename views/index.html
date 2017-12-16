@@ -49,11 +49,27 @@
             </div>
           </div>
           <div v-if="searchQuery!=null">
-              <hr/ >
-              <h4>Search:</h4>
-              <button class="btn btn-warning" v-on:click="clearSearch">{{searchQuery}} X</button>
+            <hr/>
+            <h4>Search:</h4>
+            <button class="btn btn-warning" v-on:click="clearSearch">{{searchQuery}} X</button>
           </div>
-
+          <div class="container" id="sort-list">
+            <h4>Sort:</h4>
+            <div class="">
+              <div class="input-group">
+                <span class="input-group-addon">
+                  <input type="radio" name="sort" value="date-desc" v-model="sortingMethod" v-on:change="changeSort" id="sort1" />
+                </span>
+                <label class="form-control form-control-static" for="sort1">Last Added At Top</label>
+              </div>
+              <div class="input-group">
+                <span class="input-group-addon">
+                  <input type="radio" name="sort" value="date-asc" v-model="sortingMethod" v-on:change="changeSort" id="sort2" />
+                </span>
+                <label class="form-control form-control-static" for="sort2">First Added At Top</label>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="col-md-6">
           <div class="container" id="main-frame">

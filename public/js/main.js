@@ -7,18 +7,15 @@ var MainFrame = new Vue({
         inputText: "",
         inputTopic: "",
         entryList: [],
+        entryQuery: {
+            Topic: "",
+            Search: "",
+            Sort: ""
+        },
         loading: true
     },
-    mounted: function () {
-        var self = this;
-        $.ajax({
-            type: "GET",
-            url: '/api/entry/list',
-            success: (data) => {
-                self.loading = false;
-                self.entryList = JSON.parse(data);                
-            }
-        });
+    mounted: function () {        
+        this.loadMain();
     },
     methods: {
         sendEntry: function(){
@@ -56,7 +53,15 @@ var MainFrame = new Vue({
             })
         },
         loadMain: function(){
-            var self = this;
+            //Clear query
+            this.entryQuery = {
+                Topic: "",
+                Search: "",
+                Sort: ""
+            }
+            //call
+            this.queryEntry();
+            /*var self = this;
             loading = true;
             $.ajax({
                 type: "GET",
@@ -65,17 +70,26 @@ var MainFrame = new Vue({
                     self.loading = false;
                     self.entryList = JSON.parse(data);                
                 }
-            });
+            });*/
         },
         openTopic: function(topic){
             LeftFrame.openTopic(topic);
         },
         queryEntry: function(){
-            var data = {
-                contentContain: LeftFrame.searchQuery,
-                Topic: LeftFrame.selectedTopic
-            }
-            this.loading = true;
+            var self = this;
+            self.loading = true;
+            //set sorting method
+            self.entryQuery.Sort = LeftFrame  ? LeftFrame.sortingMethod : "date-desc";
+            $.ajax({
+                type: "POST",
+                url: '/api/entry/query',
+                contentType: 'application/json',
+                data: JSON.stringify(self.entryQuery),
+                success: ((data) => {
+                    self.loading = false;
+                    self.entryList = JSON.parse(data);                
+                })
+            });
         },
         queryEntryNew: function(){            
             var data = {
@@ -93,7 +107,8 @@ var LeftFrame = new Vue({
     data:{
         topicList: [],
         selectedTopic: null,
-        searchQuery: null
+        searchQuery: null,
+        sortingMethod: "date-desc"
     },
     mounted: function(){
         var self = this;
@@ -110,6 +125,13 @@ var LeftFrame = new Vue({
     },
     methods: {
         openTopic: function(topic){
+            MainFrame.entryQuery.Topic = topic;
+            MainFrame.entryQuery.Search = "";
+            MainFrame.inputTopic = topic;
+            Search.query = "";
+            this.selectedTopic = topic;
+            MainFrame.queryEntry();            
+            /*
             var self = this;
             var data = {
                 topic: topic
@@ -130,16 +152,23 @@ var LeftFrame = new Vue({
                     self.searchQuery = null;
                 }
             });
+            */
         },
         closeTopic: function(){
-            MainFrame.loadMain();
+            MainFrame.entryQuery.Topic = "";
             this.selectedTopic = null;
             MainFrame.inputTopic = "";
+            MainFrame.queryEntry();
+
         },
         clearSearch: function(){
+            MainFrame.entryQuery.Search = "";
             this.searchQuery = null;
             Search.query = "";
-            MainFrame.loadMain();
+            MainFrame.queryEntry();
+        },
+        changeSort: function(){
+            MainFrame.queryEntry();
         }
     }
 })
@@ -152,6 +181,10 @@ var Search = new Vue({
     },
     methods: {
         searchQuery: function() {
+            LeftFrame.searchQuery = this.query;
+            MainFrame.entryQuery.Search = this.query
+            MainFrame.queryEntry();
+            /*
             var self = this;
             if(this.query == "") return;
             var data = {
@@ -170,6 +203,7 @@ var Search = new Vue({
                     LeftFrame.searchQuery = self.query;
                 }
             });
+            */
         }
     }
 })
