@@ -11,9 +11,9 @@
     crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
     crossorigin="anonymous"></script>
+  <script src="/js/moment-with-locales.js"></script>
   <script src="/js/vue.js"></script>
   <script src="/js/vue-components.js"></script>
-
 </head>
 
 <body>
@@ -99,7 +99,7 @@
                   <div class="entry-card-footer">
                     <div class="row">
                       <div class="col-md-4">
-                        <p class="entry-date">{{entry.date.toLocaleString()}}</p>
+                        <p class="entry-date">{{entry.date | formatDate}}</p>
                       </div>
                       <div class="col-md-4">
                         <p class="entry-alias" v-if="entry.sender.length!=0">{{entry.sender}}</p>

@@ -117,6 +117,11 @@ var MainFrame = new Vue({
                 })
             });
         }
+    },
+    filters: {
+        formatDate: function(date){
+            return moment(date).fromNow();
+        }
     }
 })
 
