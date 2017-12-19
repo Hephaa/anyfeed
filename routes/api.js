@@ -65,6 +65,20 @@ router.post('/entry/query', (req, res) => {
     })
 });
 
+router.post('/entry/vote', (req, res) => {
+    var id = req.body.id;
+    var isNegative = req.body.isNegative;
+
+    db.voteOnEntry(id, isNegative, (err) => {
+        if(err){
+            res.sendStatus(404);            
+        }else{
+            res.send();
+        }
+    })
+
+})
+
 //Topic
 router.post('/topic/list', (req, res) => {
     var amount = parseInt(req.body.amount);    

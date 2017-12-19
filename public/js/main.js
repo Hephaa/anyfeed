@@ -14,24 +14,24 @@ var MainFrame = new Vue({
         },
         loading: true
     },
-    mounted: function () {        
+    mounted: function () {
         this.loadMain();
     },
     methods: {
-        sendEntry: function(){
-            var self = this;            
-            if(this.inputText == ""){
+        sendEntry: function () {
+            var self = this;
+            if (this.inputText == "") {
                 //give error that it cannot be empty
                 return;
-            }            
+            }
             var data = {
                 sender: self.inputAlias.trim(),
                 content: self.inputText.trim(),
-                Topic: self.inputTopic.trim()                
+                Topic: self.inputTopic.trim()
             };
             $.ajax({
                 type: "POST",
-                url: '/api/entry/add',                
+                url: '/api/entry/add',
                 contentType: 'application/json',
                 data: JSON.stringify(data),
                 success: (entry) => {
@@ -40,19 +40,19 @@ var MainFrame = new Vue({
                     var topic = LeftFrame.topicList.filter((obj) => {
                         return obj.Title == self.inputTopic.trim();
                     })
-                    if(topic.length != 0){
+                    if (topic.length != 0) {
                         topic[0].EntryAmount++;
                     }
-                    else if(LeftFrame.topicList.length < 10 && elf.inputTopic.trim() != ""){
-                        LeftFrame.topicList.push({Title: self.inputTopic.trim(), EntryAmount: 1})
+                    else if (LeftFrame.topicList.length < 10 && elf.inputTopic.trim() != "") {
+                        LeftFrame.topicList.push({ Title: self.inputTopic.trim(), EntryAmount: 1 })
                     }
                     self.inputAlias = "";
                     self.inputText = "";
-                    self.inputTopic = "";                    
+                    self.inputTopic = "";
                 }
             })
         },
-        loadMain: function(){
+        loadMain: function () {
             //Clear query
             this.entryQuery = {
                 Topic: "",
@@ -72,14 +72,14 @@ var MainFrame = new Vue({
                 }
             });*/
         },
-        openTopic: function(topic){
+        openTopic: function (topic) {
             LeftFrame.openTopic(topic);
         },
-        queryEntry: function(){
+        queryEntry: function () {
             var self = this;
             self.loading = true;
             //set sorting method
-            self.entryQuery.Sort = LeftFrame  ? LeftFrame.sortingMethod : "date-desc";
+            self.entryQuery.Sort = LeftFrame ? LeftFrame.sortingMethod : "date-desc";
             $.ajax({
                 type: "POST",
                 url: '/api/entry/query',
@@ -87,16 +87,35 @@ var MainFrame = new Vue({
                 data: JSON.stringify(self.entryQuery),
                 success: ((data) => {
                     self.loading = false;
-                    self.entryList = JSON.parse(data);                
+                    self.entryList = JSON.parse(data);
                 })
             });
         },
-        queryEntryNew: function(){            
+        queryEntryNew: function () {
             var data = {
                 contentContain: LeftFrame.searchQuery,
                 Topic: LeftFrame.selectedTopic,
                 date: this.entryList[0].date
             }
+        },
+        voteOnEntry: function (entry, isNegative) {
+            var id = entry._id
+            var data = {
+                id: id,
+                isNegative: isNegative
+            }
+            $.ajax({
+                type: "POST",
+                url: '/api/entry/vote',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: (() => {
+                    if (isNegative)
+                        entry.NegativeVote++;
+                    else
+                        entry.PositiveVote++;                        
+                })
+            });
         }
     }
 })
@@ -104,18 +123,18 @@ var MainFrame = new Vue({
 //Left frame app
 var LeftFrame = new Vue({
     el: '#left-frame',
-    data:{
+    data: {
         topicList: [],
         selectedTopic: null,
         searchQuery: null,
         sortingMethod: "date-desc"
     },
-    mounted: function(){
+    mounted: function () {
         var self = this;
-        var data = {amount:10}
+        var data = { amount: 10 }
         $.ajax({
-            type:"POST",
-            url:"/api/topic/list",
+            type: "POST",
+            url: "/api/topic/list",
             contentType: 'application/json',
             data: JSON.stringify(data),
             success: (list) => {
@@ -124,13 +143,13 @@ var LeftFrame = new Vue({
         })
     },
     methods: {
-        openTopic: function(topic){
+        openTopic: function (topic) {
             MainFrame.entryQuery.Topic = topic;
             MainFrame.entryQuery.Search = "";
             MainFrame.inputTopic = topic;
             Search.query = "";
             this.selectedTopic = topic;
-            MainFrame.queryEntry();            
+            MainFrame.queryEntry();
             /*
             var self = this;
             var data = {
@@ -154,20 +173,20 @@ var LeftFrame = new Vue({
             });
             */
         },
-        closeTopic: function(){
+        closeTopic: function () {
             MainFrame.entryQuery.Topic = "";
             this.selectedTopic = null;
             MainFrame.inputTopic = "";
             MainFrame.queryEntry();
 
         },
-        clearSearch: function(){
+        clearSearch: function () {
             MainFrame.entryQuery.Search = "";
             this.searchQuery = null;
             Search.query = "";
             MainFrame.queryEntry();
         },
-        changeSort: function(){
+        changeSort: function () {
             MainFrame.queryEntry();
         }
     }
@@ -180,7 +199,7 @@ var Search = new Vue({
         query: ""
     },
     methods: {
-        searchQuery: function() {
+        searchQuery: function () {
             LeftFrame.searchQuery = this.query;
             MainFrame.entryQuery.Search = this.query
             MainFrame.queryEntry();

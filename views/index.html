@@ -5,11 +5,15 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
     crossorigin="anonymous">
   <link rel="stylesheet" href="/css/stylesheet.css">
+  <link rel="stylesheet" href="/css/font-awesome.min.css">
   <script src="/js/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
     crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
     crossorigin="anonymous"></script>
+  <script src="/js/vue.js"></script>
+  <script src="/js/vue-components.js"></script>
+
 </head>
 
 <body>
@@ -84,17 +88,39 @@
             <div class="loader" v-if="loading">
             </div>
             <ul class="list-group" v-else>
-              <li class="list-group-item" v-for="entry in entryList">
-                <div class="card">
-                  <div class="card-header" v-if="entry.Topic!=null">
+              <li class="list-group-item entry-card" v-for="entry in entryList">
+                <div>
+                  <div class="entry-card-title" v-if="entry.Topic!=null">
                     <button class="btn btn-link" v-on:click="openTopic(entry.Topic)">{{entry.Topic}}</button>
                   </div>
-                  <div class="card-body">
-                    <p class="card-link">{{entry.content}}</p>
+                  <div class="entry-card-body">
+                    <p class="entry-content">{{entry.content}}</p>
                   </div>
-                  <div class="card-footer">
-                    <p class="card-subtitle entry-date">{{entry.date.toLocaleString()}}</p>
-                    <p class="card-subtitle entry-alias" v-if="entry.sender.length!=0">{{entry.sender}}</p>
+                  <div class="entry-card-footer">
+                    <div class="row">
+                      <div class="col-md-4">
+                        <p class="entry-date">{{entry.date.toLocaleString()}}</p>
+                      </div>
+                      <div class="col-md-4">
+                        <p class="entry-alias" v-if="entry.sender.length!=0">{{entry.sender}}</p>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="row">
+                          <button class="btn btn-outline-success col-md-4" v-on:click="voteOnEntry(entry, false)">
+                            <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+                            {{entry.PositiveVote}}
+                          </button>
+                          <button class="btn btn-outline-info col-md-4">
+                            <i class="fa fa-comments-o" aria-hidden="true"></i>
+                            {{entry.AnswerAmount}}
+                          </button>
+                          <button class="btn btn-outline-danger col-md-4" v-on:click="voteOnEntry(entry, true)">
+                            <i class="fa fa-thumbs-o-down" aria-hidden="true"></i>
+                            {{entry.NegativeVote}}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </li>
@@ -107,8 +133,6 @@
       </div>
     </div>
   </div>
-  <script src="/js/vue.js"></script>
-  <script src="/js/vue-components.js"></script>
   <script src="/js/main.js"></script>
 </body>
 
