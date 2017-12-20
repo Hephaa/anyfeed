@@ -94,7 +94,22 @@ var DBHandler = {
                     }
                 })
             } else {
-                return callback(entry);
+                if (entry.AnswerTo) {
+                    Entry.findById(entry.AnswerTo).exec((err, data) => {
+                        if(data!= null){
+                            data.AnswerAmount++;
+                            data.save((err, e) => {
+                                return callback(entry);
+    
+                            })
+                        }
+                        else{
+                            return callback(entry);
+                        }
+                    })
+                }
+                else
+                    return callback(entry);
             }
         });
     },
@@ -119,6 +134,13 @@ var DBHandler = {
             queryMethod.Topic = query.Topic;
         if (query.Search)
             queryMethod.content = { $regex: query.Search, $options: "i" }
+        if (query.AnswerTo){
+            queryMethod.AnswerTo = query.AnswerTo
+        }
+        else{
+            queryMethod.AnswerTo = null;
+        }
+
 
         //create sort method
         var sortMethod = {};

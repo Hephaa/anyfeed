@@ -43,7 +43,7 @@ var MainFrame = new Vue({
                     if (topic.length != 0) {
                         topic[0].EntryAmount++;
                     }
-                    else if (LeftFrame.topicList.length < 10 && elf.inputTopic.trim() != "") {
+                    else if (LeftFrame.topicList.length < 10 && self.inputTopic.trim() != "") {
                         LeftFrame.topicList.push({ Title: self.inputTopic.trim(), EntryAmount: 1 })
                     }
                     self.inputAlias = "";
@@ -116,6 +116,9 @@ var MainFrame = new Vue({
                         entry.PositiveVote++;                        
                 })
             });
+        },
+        selectEntry: function(entry){
+            RightFrame.setSelectedEntry(entry);
         }
     },
     filters: {
@@ -193,6 +196,108 @@ var LeftFrame = new Vue({
         },
         changeSort: function () {
             MainFrame.queryEntry();
+        }
+    }
+})
+
+var RightFrame = new Vue({
+    el: '#right-frame',
+    data: {
+        selectedEntry: null,
+        loading: false,
+        answerEntryList: [],
+        isActive: false,
+        answerAlias: "",
+        answerContent: ""
+    },
+    methods: {
+        setActive: function(b){
+            this.isActive = b;
+        },
+        setSelectedEntry: function(entry){
+            this.setActive(true);
+            this.loading = true;
+            this.selectedEntry = entry;
+
+            var data = {
+                AnswerTo: entry._id,
+                sortingMethod: "date-desc"
+            }
+            var self = this;
+            $.ajax({
+                type: "POST",
+                url: "/api/entry/query",
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: (list) => {
+                    self.loading=false;
+                    self.answerEntryList = JSON.parse(list);                    
+                }
+            })
+        },
+        answer: function(entry){
+            var self = this;
+            var data = {
+                sender: self.answerAlias.trim(),
+                content: self.answerContent.trim(),
+                AnswerTo: self.selectedEntry._id
+            }
+
+            $.ajax({
+                type: "POST",
+                url: '/api/entry/add',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: (entry) => {
+                    self.answerEntryList.unshift(JSON.parse(entry));
+                    self.answerAlias = "";
+                    self.answerContent = "";
+                }
+            })
+        },
+        voteOnEntry: function (entry, isNegative) {
+            var id = entry._id
+            var data = {
+                id: id,
+                isNegative: isNegative
+            }
+            $.ajax({
+                type: "POST",
+                url: '/api/entry/vote',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: (() => {
+                    if (isNegative)
+                        entry.NegativeVote++;
+                    else
+                        entry.PositiveVote++;                        
+                })
+            });
+        },
+        selectEntry: function(entry){
+            this.setSelectedEntry(entry);
+        }
+    },
+    filters: {
+        formatDate: function(date){
+            return moment(date).fromNow();
+        }
+    }
+});
+
+var EntryOverlay = new Vue({
+    el: '#over-panel',
+    data: {
+        selectedEntry: null,
+        commetnEntries: [],
+        loading: false
+    },
+    methods: {
+        clearEntry: function(){
+            this.selectedEntry = null;
+        },
+        dummy: function(){
+            event.stopPropagation()
         }
     }
 })

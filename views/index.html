@@ -32,7 +32,7 @@
     </div>
   </nav>
   <div id="app">
-    <div class="container">
+    <div class="container" id="main-container">
       <div class="row">
         <div class="col-md-3" id="left-frame">
           <div class="container topic-list">
@@ -75,7 +75,7 @@
             </div>
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-5">
           <div class="container" id="main-frame">
             <div class="form-group entry-input">
               <div class="form-inline row">
@@ -110,7 +110,7 @@
                             <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
                             {{entry.PositiveVote}}
                           </button>
-                          <button class="btn btn-outline-info col-md-4">
+                          <button class="btn btn-outline-info col-md-4" v-on:click="selectEntry(entry)">
                             <i class="fa fa-comments-o" aria-hidden="true"></i>
                             {{entry.AnswerAmount}}
                           </button>
@@ -127,11 +127,78 @@
             </ul>
           </div>
         </div>
-        <div class="col-md-3">
-
+        <div class="col-md-4" id="right-frame" v-if="isActive">
+          <div class="form-group">
+            <div class="form-inline row">
+              <input type="text" class="form-control col-md-4" placeholder="Alias" v-model="answerAlias">
+              <input type="text" class="form-control col-md-8" placeholder="Your Answer" v-model="answerContent">              
+            </div>
+            <div class="form-inline row">
+                <button class="btn btn-outline-primary col-md-8" v-on:click="answer">
+                    Comment <i class="fa fa-comment-o" aria-hidden="true"></i>
+                </button>
+                <button class="btn btn-outline-danger col-md-4" v-on:click="setActive(false)">
+                    Close
+                </button>
+            </div>
+          </div>
+          <div class="loader" v-if="loading">
+          </div>
+          <ul class="list-group" v-else>
+            <li class="list-group-item entry-card" v-for="entry in answerEntryList">
+              <div>
+                <div class="entry-card-title" v-if="entry.Topic!=null">
+                  <button class="btn btn-link" v-on:click="openTopic(entry.Topic)">{{entry.Topic}}</button>
+                </div>
+                <div class="entry-card-body">
+                  <p class="entry-content">{{entry.content}}</p>
+                </div>
+                <div class="entry-card-footer">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <p class="entry-date">{{entry.date | formatDate}}</p>
+                    </div>
+                    <div class="col-md-4">
+                      <p class="entry-alias" v-if="entry.sender.length!=0">{{entry.sender}}</p>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="row">
+                        <button class="btn btn-outline-success col-md-4" v-on:click="voteOnEntry(entry, false)">
+                          <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+                          {{entry.PositiveVote}}
+                        </button>
+                        <button class="btn btn-outline-info col-md-4" v-on:click="selectEntry(entry)">
+                          <i class="fa fa-comments-o" aria-hidden="true"></i>
+                          {{entry.AnswerAmount}}
+                        </button>
+                        <button class="btn btn-outline-danger col-md-4" v-on:click="voteOnEntry(entry, true)">
+                          <i class="fa fa-thumbs-o-down" aria-hidden="true"></i>
+                          {{entry.NegativeVote}}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
+  </div>
+  <div id="over-panel" v-bind:class="{none: selectedEntry==null}" v-on:click="clearEntry">
+    <div class="row">
+      <div class="col-md-4"></div>
+      <div class="col-md-4">
+        <div class="container overlay-panel" v-on:click="dummy">
+          <div class="overlay-entry">
+
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4"></div>
+    </div>
+
   </div>
   <script src="/js/main.js"></script>
 </body>

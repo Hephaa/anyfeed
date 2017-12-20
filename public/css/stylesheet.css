@@ -53,8 +53,28 @@ body {
   color: cadetblue;
 }
 
-#left-frame {
-  
+#over-panel {
+  padding-top: 70px;
+  z-index: 5;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgba(0,0,0,0.6);
+}
+
+.overlay-panel {
+  height: 80%;
+  margin: 0 auto;
+  position:relative;
+  z-index: 10;
+  background: #fff;
+  border: 5px solid #ccc;
+  border-radius: 10px;
+}
+.none {
+  display: none;
 }
 
 .loader {
