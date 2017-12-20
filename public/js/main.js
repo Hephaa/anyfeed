@@ -236,6 +236,10 @@ var RightFrame = new Vue({
             })
         },
         answer: function(entry){
+            if (this.answerContent == "") {
+                //give error that it cannot be empty
+                return;
+            }
             var self = this;
             var data = {
                 sender: self.answerAlias.trim(),
@@ -248,8 +252,9 @@ var RightFrame = new Vue({
                 url: '/api/entry/add',
                 contentType: 'application/json',
                 data: JSON.stringify(data),
-                success: (entry) => {
+                success: (entry) => {                    
                     self.answerEntryList.unshift(JSON.parse(entry));
+                    self.selectedEntry.AnswerAmount++;
                     self.answerAlias = "";
                     self.answerContent = "";
                 }

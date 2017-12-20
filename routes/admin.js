@@ -73,8 +73,23 @@ router.delete('/:item', function (req, res) {
                 }
             })
         }
-        else{
-            res.json(data);
+        else{  
+            if(data.AnswerTo){
+                Entry.findById(data.AnswerTo).exec((err, e) => {
+                    if(e!= null){
+                        e.AnswerAmount--;
+                        e.save((err, en) => {
+                            res.json(data);
+
+                        })
+                    }
+                    else{
+                        res.json(data);
+                    }
+                })
+            }
+            else
+                res.json(data);
         }
         
     });
