@@ -14,4 +14,5 @@ node .\anyfeed.js
 Now you can go to localhost:3000 to view!
 
 ## Current State
-Basic logic and some extra  stuff is in here now! Administration is being implemented in a different project and will be merged soon
+Basic logic and most of the extra features are implemented, Admin panel is also active. Needs some UI updates
+http://172.104.228.197:3000
